@@ -1,10 +1,12 @@
 package com.codeclan.homework.wk13_day_2_hw;
 
+import com.codeclan.homework.wk13_day_2_hw.models.File;
 import com.codeclan.homework.wk13_day_2_hw.models.Folder;
 import com.codeclan.homework.wk13_day_2_hw.models.User;
 import com.codeclan.homework.wk13_day_2_hw.repositories.FileRepository;
 import com.codeclan.homework.wk13_day_2_hw.repositories.FolderRepository;
 import com.codeclan.homework.wk13_day_2_hw.repositories.UserRepository;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,19 +31,22 @@ public class PersistenceTests {
 	@Autowired
 	 UserRepository userRepository;
 
-	@Ignore
+	@Before
+	public void setUp() {
+		fileRepository.deleteAll();
+		folderRepository.deleteAll();
+		userRepository.deleteAll();
+	}
+
 	@Test
 	public void canCreateUser() {
-		userRepository.deleteAll();
 		User user = new User("Joe Bloggs");
 		userRepository.save(user);
 		assertEquals(1, userRepository.count());
 	}
 
 	@Test
-	public void canCreateFolder() {
-		folderRepository.deleteAll();
-		userRepository.deleteAll();
+	public void canCreateFolderUnderUser() {
 		User user = new User("Joe Bloggs");
 		Folder folder = new Folder("/users/jbloggs", user);
 		user.addFolder(folder);
@@ -50,5 +55,24 @@ public class PersistenceTests {
 		assertEquals(1, folderRepository.count());
 		assertEquals(1, user.getFolders().size());
 		assertEquals(folder, user.getFolders().get(0));
+	}
+
+	@Test
+	public void canAddFilesToFolder() {
+		User user = new User("Joe Bloggs");
+		userRepository.save(user);
+
+		Folder root = new Folder("",user);
+		folderRepository.save(root);
+
+		File file1 = new File("foo",".txt",1024L,root);
+		File file2 = new File("install",".log",5143L,root);
+
+		fileRepository.save(file1);
+		fileRepository.save(file2);
+
+		assertEquals(1,userRepository.count());
+		assertEquals(1,folderRepository.count());
+		assertEquals(2,fileRepository.count());
 	}
 }
