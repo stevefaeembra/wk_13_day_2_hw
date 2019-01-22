@@ -1,11 +1,26 @@
 package com.codeclan.homework.wk13_day_2_hw.models;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="files")
 public class File {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(name="name")
 	private String name;
+
+	@Column(name="extension")
 	private String extension;
+
+	@Column(name="fileSize")
 	private Long fileSize;
+
+	@ManyToOne
+	@JoinColumn(name="folder_id", nullable = false)
 	private Folder inFolder;
 
 	public File(String name, String extension, Long fileSize, Folder inFolder) {

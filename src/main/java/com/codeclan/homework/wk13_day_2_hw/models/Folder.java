@@ -1,14 +1,25 @@
 package com.codeclan.homework.wk13_day_2_hw.models;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name="folders")
 public class Folder {
 
-	private String title;
-	private List<File> files;
-	private User owner;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(name="title")
+	private String title;
+
+	@OneToMany(mappedBy="folder")
+	private List<File> files;
+
+	@Column(name="owner")
+	private User owner;
 
 	public Folder(String title, User owner) {
 		this.title = title;
@@ -17,7 +28,6 @@ public class Folder {
 	}
 
 	public Folder() {};
-
 
 	public Long getId() {
 		return id;
