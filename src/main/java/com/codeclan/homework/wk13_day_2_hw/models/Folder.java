@@ -1,5 +1,7 @@
 package com.codeclan.homework.wk13_day_2_hw.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +17,12 @@ public class Folder {
 	@Column(name="title")
 	private String title;
 
-	@OneToMany(mappedBy="folder")
+	@JsonIgnore
+	@OneToMany(mappedBy="inFolder")
 	private List<File> files;
 
-	@Column(name="owner")
+	@ManyToOne
+	@JoinColumn(name="user_id", nullable=false)
 	private User owner;
 
 	public Folder(String title, User owner) {

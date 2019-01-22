@@ -1,6 +1,9 @@
 package com.codeclan.homework.wk13_day_2_hw.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,12 +17,13 @@ public class User {
 	@Column(name="name")
 	private String name;
 
-	@OneToMany(mappedBy="user")
+	@JsonIgnore
+	@OneToMany(mappedBy="owner")
 	private List<Folder> folders;
 
-	public User(String name, List<Folder> folders) {
+	public User(String name) {
 		this.name = name;
-		this.folders = folders;
+		this.folders = new ArrayList<>();
 	}
 
 	public User() {};
