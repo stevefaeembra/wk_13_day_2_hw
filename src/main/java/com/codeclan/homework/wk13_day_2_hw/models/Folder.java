@@ -42,7 +42,7 @@ public class Folder {
 	}
 
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	public void setTitle(String title) {
@@ -50,7 +50,7 @@ public class Folder {
 	}
 
 	public List<File> getFiles() {
-		return files;
+		return this.files;
 	}
 
 	public void setFiles(List<File> files) {
